@@ -1,0 +1,26 @@
+module picture.fwk {
+    requires spring.context;
+    requires lombok;
+    requires transitive java.compiler;
+    requires org.slf4j;
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires spring.core;
+    requires jakarta.annotation;
+    requires spring.boot.autoconfigure;
+    requires spring.beans;
+    requires spring.aop;
+
+    exports org.icroco.picture.javafx;
+    //    requires transitive java.compiler;
+//    requires lombok;
+//    requires spring.context;
+//    requires com.google.auto.service;
+//
+//    exports org.icroco.picture.javafx;
+//
+
+    provides javax.annotation.processing.Processor with
+            org.icroco.javafx.FxViewProcessor;
+
+}
