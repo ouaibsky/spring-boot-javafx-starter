@@ -52,11 +52,6 @@
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>org.openjfx</groupId>-->
-    <!--      <artifactId>javafx-fxml</artifactId>-->
-    <!--      <version>${javafx.version}</version>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -108,8 +103,10 @@
           <source>${java.version}</source>
           <target>${java.version}</target>
           <release>${java.version}</release>
+          <showWarnings>true</showWarnings>
           <compilerArgs>
             <arg>-parameters</arg>
+            <arg>-Xlint</arg>
           </compilerArgs>
           <annotationProcessorPaths>
             <path>

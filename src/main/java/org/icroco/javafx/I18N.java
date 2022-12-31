@@ -70,7 +70,8 @@ public class I18N {
         try {
             ResourceBundle bundle = ResourceBundle.getBundle("messages", getLocale());
             return MessageFormat.format(bundle.getString(key), args);
-        } catch (MissingResourceException ex) {
+        }
+        catch (MissingResourceException ex) {
             log.warn("Cannot find resource for key: '{}' nad locale: '{}'", key, getLocale());
         }
         return isOptional ? "" : "NotFound";

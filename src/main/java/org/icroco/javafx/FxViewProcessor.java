@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-//@Slf4j
 @NoArgsConstructor
 @SupportedAnnotationTypes("org.icroco.javafx.FxViewBinding")
 @SupportedSourceVersion(SourceVersion.RELEASE_19)
@@ -22,7 +21,6 @@ import java.util.Set;
 public class FxViewProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        processingEnv.getMessager().printWarning("COUCOU");
         for (final Element element : roundEnv.getElementsAnnotatedWith(FxViewBinding.class)) {
             processingEnv.getMessager().printNote("Process, found: %s, class: '%s'%n".formatted(element, element.getSimpleName()));
             if (element instanceof TypeElement typeElement) {
@@ -37,19 +35,6 @@ public class FxViewProcessor extends AbstractProcessor {
                                                                                                                     FxViewBinding.class.getName()));
                     e.printStackTrace();
                 }
-//                for (final Element eclosedElement : typeElement.getEnclosedElements()) {
-//                    if( eclosedElement instanceof VariableElement ) {
-//                        final VariableElement variableElement = ( VariableElement )eclosedElement;
-//
-//                        if( !variableElement.getModifiers().contains( Modifier.FINAL ) ) {
-//                            processingEnv.getMessager().printMessage( Diagnostic.Kind.ERROR,
-//                                    String.format( "Class '%s' is annotated as @Immutable,
-//                                            but field '%s' is not declared as final",
-//                            typeElement.getSimpleName(), variableElement.getSimpleName()
-//               )
-//             );
-//                        }
-//                }
             }
         }
 

@@ -13,7 +13,6 @@ import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 public class ViewManager {
-
     private final Map<String, FxView<?>> views;
 
     public ViewManager(final List<FxView<?>> views) {
@@ -34,7 +33,6 @@ public class ViewManager {
     public <C> FxView<C> getPrimary() {
         return views.values()
                     .stream()
-//                .map(FxView::getInfo)
                     .filter(si -> si.binding().isPrimary())
                     .findFirst()
                     .or(() -> views.values().stream().findFirst())

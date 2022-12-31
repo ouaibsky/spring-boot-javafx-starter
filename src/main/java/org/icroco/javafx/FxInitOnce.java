@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * If into your fxml file you're using fx:include instruction. your controller must extend this one to make sure your initialize is called one end only one.
+ * If into your fxml file you're using fx:include instruction.
+ * Your controller must extend this one to make sure your 'initialize' method is called one and only once.
  */
 @Slf4j
 public abstract class FxInitOnce implements FxInit {

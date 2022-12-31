@@ -106,7 +106,7 @@ public abstract class AbstractJavaFxApplication extends Application {
     }
 
     private void showError(Thread thread, Throwable throwable) {
-        log.error("An unexpected error occurred: ", throwable);
+        log.error("An unexpected error occurred in thread: {}, ", thread, throwable);
         if (Platform.isFxApplicationThread()) {
             showErrorToUser(throwable);
         }
@@ -117,7 +117,7 @@ public abstract class AbstractJavaFxApplication extends Application {
      *
      */
     protected void showErrorToUser(Throwable throwable) {
-
+        log.debug("Make sure to override showErrorToUser to present error to user: {}", throwable.getMessage());
     }
 
     protected void postInit() {
@@ -126,12 +126,12 @@ public abstract class AbstractJavaFxApplication extends Application {
 
     @SuppressWarnings("unused")
     protected void preStart(Stage primaryStage) {
-        log.debug("preStart not implemented");
+        log.debug("preStart not implemented: {}", primaryStage);
     }
 
     @SuppressWarnings("unused")
     protected void postStart(Stage primaryStage) {
-        log.debug("postStart not implemented");
+        log.debug("postStart not implemented: {}", primaryStage);
     }
 
     protected void preStop() {
@@ -139,7 +139,7 @@ public abstract class AbstractJavaFxApplication extends Application {
     }
 
     protected void closeRequest(WindowEvent windowEvent) {
-        log.debug("closeRequest not implemented");
+        log.debug("closeRequest not implemented: {}", windowEvent);
     }
 
 }
