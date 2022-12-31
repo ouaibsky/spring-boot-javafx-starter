@@ -1,15 +1,14 @@
 package org.icroco.javafx;
 
+import com.google.auto.service.AutoService;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,24 +16,28 @@ import java.util.Set;
 
 //@Slf4j
 @NoArgsConstructor
-@SupportedAnnotationTypes("org.icroco.picture.fwk.FxViewBinding")
+@SupportedAnnotationTypes("org.icroco.javafx.FxViewBinding")
 @SupportedSourceVersion(SourceVersion.RELEASE_19)
+@AutoService(Processor.class)
 public class FxViewProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
+        processingEnv.getMessager().printWarning("COUCOU");
         for (final Element element : roundEnv.getElementsAnnotatedWith(FxViewBinding.class)) {
-            System.out.printf("Process, found: %s, class: '%s'%n", element, element.getSimpleName());
+            processingEnv.getMessager().printNote("Process, found: %s, class: '%s'%n".formatted(element, element.getSimpleName()));
             if (element instanceof TypeElement typeElement) {
-                System.out.printf("typeElement: %s, qualifiedNamed: %s%n", typeElement, typeElement.getQualifiedName());
+                processingEnv.getMessager()
+                             .printNote("typeElement: %s, qualifiedNamed: %s%n".formatted(typeElement, typeElement.getQualifiedName()));
                 try {
                     writeView(typeElement.getQualifiedName(), typeElement.getSimpleName(), typeElement.getAnnotation(FxViewBinding.class));
                 }
                 catch (IOException e) {
-                    System.err.printf("Cannot create view for class: '%s', annotated with: '%s'%n", typeElement, FxViewBinding.class.getName());
+                    processingEnv.getMessager()
+                                 .printError("Cannot create view for class: '%s', annotated with: '%s'%n".formatted(typeElement,
+                                                                                                                    FxViewBinding.class.getName()));
                     e.printStackTrace();
                 }
-                for (final Element eclosedElement : typeElement.getEnclosedElements()) {
+//                for (final Element eclosedElement : typeElement.getEnclosedElements()) {
 //                    if( eclosedElement instanceof VariableElement ) {
 //                        final VariableElement variableElement = ( VariableElement )eclosedElement;
 //
@@ -46,7 +49,7 @@ public class FxViewProcessor extends AbstractProcessor {
 //               )
 //             );
 //                        }
-                }
+//                }
             }
         }
 
@@ -55,23 +58,24 @@ public class FxViewProcessor extends AbstractProcessor {
     }
 
     private void writeView(final Name qualifiedName, final Name simpleName, FxViewBinding annotation) throws IOException {
-        System.out.println("simpleName: " + simpleName);
+        processingEnv.getMessager()
+                     .printMessage(Diagnostic.Kind.NOTE, "simpleName: " + simpleName);
         var packageName = qualifiedName.toString().replace("." + simpleName.toString(), "");
         var viewName    = simpleName.toString().replace("Controller", "View");
         var output = """
                 package %1$s;
                         
                 import org.springframework.stereotype.Component;
-                import org.icroco.picture.fwk.ViewLoader;
-                import org.icroco.picture.fwk.SceneInfo;
-                import org.icroco.picture.fwk.FxViewDelegate;
-                import org.icroco.picture.fwk.FxView;
+                import org.icroco.javafx.ViewLoader;
+                import org.icroco.javafx.SceneInfo;
+                import org.icroco.javafx.FxViewDelegate;
+                import org.icroco.javafx.FxView;
                                 
-                @Component       
-                public class %2$s extends FxViewDelegate { 
+                @Component
+                public class %2$s extends FxViewDelegate<%5$s> {
                     public %2$s(ViewLoader loader, %5$s controller) {
                         super(loader.loadView(controller));
-                    }      
+                    }
                 }
                 """.formatted(packageName,
                               viewName,
