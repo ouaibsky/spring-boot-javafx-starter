@@ -16,14 +16,14 @@ import static java.util.Objects.requireNonNull;
 public class ViewLoader {
     private final ApplicationContext applicationContext;
 
-    public <T> SceneInfo<T> loadView(T controller) {
+    public <T> FxViewImpl<T> loadView(T controller) {
         return loadView(controller, controller.getClass().getAnnotation(FxViewBinding.class));
     }
 
-    public <T> SceneInfo<T> loadView(T controller, FxViewBinding annotation) {
+    public <T> FxViewImpl<T> loadView(T controller, FxViewBinding annotation) {
         if (annotation == null) {
             throw new IllegalStateException("Class: '%s' is not annotated with '@ %s'"
-                    .formatted(controller.getClass().getSimpleName(), FxViewBinding.class.getSimpleName()));
+                                                    .formatted(controller.getClass().getSimpleName(), FxViewBinding.class.getSimpleName()));
         }
         requireNonNull(annotation.fxmlLocation(), "LoadingClass location cannot be empty");
         var resource = controller.getClass().getResource(annotation.fxmlLocation());
@@ -36,7 +36,7 @@ public class ViewLoader {
             Region root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
-            return new SceneInfo<>(scene, controller, annotation);
+            return new FxViewImpl<>(scene, controller, annotation);
 
         } catch (IOException ex) {
             throw new IllegalArgumentException("Unexpected error while loading view: " + annotation.fxmlLocation(), ex);

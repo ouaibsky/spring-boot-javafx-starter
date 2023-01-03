@@ -54,7 +54,6 @@ public class FxViewProcessor extends AbstractProcessor {
                 import javax.annotation.processing.Generated;
                 import org.springframework.stereotype.Component;
                 import org.icroco.javafx.ViewLoader;
-                import org.icroco.javafx.SceneInfo;
                 import org.icroco.javafx.FxViewDelegate;
                 import org.icroco.javafx.FxView;
                             

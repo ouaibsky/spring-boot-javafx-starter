@@ -8,7 +8,7 @@ import org.springframework.lang.NonNull;
 @AllArgsConstructor
 public class FxViewDelegate<T> implements FxView<T> {
     @NonNull
-    private final SceneInfo<T> delegate;
+    private final FxViewImpl<T> delegate;
 
     @Override
     public Scene scene() {
