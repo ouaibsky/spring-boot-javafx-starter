@@ -6,6 +6,49 @@
     <artifactId>spring-boot-javafx-starter</artifactId>
     <version>1.0.1</version>
 
+    <licenses>
+        <license>
+            <name>GNU General Public License version 3.0 (GPLv3)</name>
+            <url>http://www.opensource.org/licenses/gpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>ouaibsky</id>
+            <name>Christophe Lallement</name>
+            <email>ouaibsky@gmail.com</email>
+            <roles>
+                <role>Senior Architect</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/ouaibsky/spring-boot-javafx-starter.git</connection>
+        <developerConnection>scm:git:https://github.com/ouaibsky/spring-boot-javafx-starter.git</developerConnection>
+        <url>https://github.com/ouaibsky/spring-boot-javafx-starter</url>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/ouaibsky/spring-boot-javafx-starter/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>ICROCO Release Repository</name>
+            <url>http://oss.sonatype.org/content/repositories/icroco-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>ICROCO Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <auto-service.version>1.0.1</auto-service.version>
         <ikonli-bom.version>12.3.1</ikonli-bom.version>
@@ -13,14 +56,15 @@
         <javafx.version>19-ea+11</javafx.version>
         <lombok.version>1.18.24</lombok.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <resource.delimiter>@</resource.delimiter>
         <spring-boot-dependencies.version>3.0.1</spring-boot-dependencies.version>
-        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -164,17 +208,40 @@
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
-                        <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <phase>verify</phase>
                         <configuration>
                             <skip>false</skip>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

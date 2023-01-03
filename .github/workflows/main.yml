@@ -7,7 +7,7 @@ on:
       branches: [ main ]
 
 jobs:
-  build_and_test:
+  "Build and test":
 
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
@@ -39,6 +39,12 @@ jobs:
       - name: Maven bump version
         run: ./mvnw -B build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}'
 
+      - name: Get version
+        run: |
+          MVN_VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+          echo "::set-output name=version::$MVN_VERSION"
+        id: get_version
+
       - name: Maven build
         run: ./mvnw -B clean package
 
@@ -56,5 +62,5 @@ jobs:
         with:
           author_name: Christophe
           author_email: ouaibsky@gmail.com
-          message: 'Next Version [skip ci]'
+          message: "Next Version ${{ steps.get_version.outputs.version }} [skip ci]"
           add: 'pom.xml'
