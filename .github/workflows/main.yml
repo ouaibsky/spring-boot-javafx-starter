@@ -46,7 +46,7 @@ jobs:
         id: get_version
 
       - name: Maven build
-        run: ./mvnw -B clean package
+        run: ./mvnw -B clean package javadoc:jar
 
       - name: Maven deploy OSSRH
         run: ./mvnw -B -DskipTests -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} deploy
