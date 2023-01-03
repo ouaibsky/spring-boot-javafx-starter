@@ -8,7 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -24,9 +25,9 @@ public class ViewLoader {
             throw new IllegalStateException("Class: '%s' is not annotated with '@ %s'"
                     .formatted(controller.getClass().getSimpleName(), FxViewBinding.class.getSimpleName()));
         }
-        Objects.requireNonNull(annotation.fxmlLocation(), "LoadingClass location cannot be empty");
+        requireNonNull(annotation.fxmlLocation(), "LoadingClass location cannot be empty");
         var resource = controller.getClass().getResource(annotation.fxmlLocation());
-        Objects.requireNonNull(resource, "resource not found: "+annotation.fxmlLocation());
+        requireNonNull(resource, "resource not found: " + annotation.fxmlLocation());
 
         var fxmlLoader = new FXMLLoader(resource);
         fxmlLoader.setControllerFactory(applicationContext::getBean);
