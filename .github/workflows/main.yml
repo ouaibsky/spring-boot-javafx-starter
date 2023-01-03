@@ -22,13 +22,25 @@ jobs:
           java-package: jdk+fx
           architecture: x64
           cache: maven
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name: Maven bump version
         run: ./mvnw -B build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}'
+
       - name: Maven build
         run: ./mvnw -B clean package
+
+      - name: Maven deploy OSSRH
+        run: ./mvnw -B -DskipTests -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+
       - name: Maven next version
-        run: ./mvnw -B build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}'
+        run: ./mvnw -B build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT'
+
       - name: Commit version
         uses: EndBug/add-and-commit@v9
         with:
