@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icroco</groupId>
   <artifactId>spring-boot-javafx-starter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <properties>
     <auto-service.version>1.0.1</auto-service.version>
