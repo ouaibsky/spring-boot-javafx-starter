@@ -1,3 +1,5 @@
+# gpg help: from https://github.com/marketplace/actions/import-gpg
+
 name: Maven CI/CD
 
 on:
@@ -21,8 +23,8 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           fingerprint: "818D3AE5CA5FA7DE94EAB67EA62BBEF5FDE0F726"
-      - name: List keys
-        run: gpg -K
+      #      - name: List keys
+      #        run: gpg -K
 
       - name: Set up JDK 19
         uses: actions/setup-java@v3
@@ -46,10 +48,7 @@ jobs:
         id: get_version
 
       - name: Maven build
-        run: ./mvnw -B clean package javadoc:jar
-
-      - name: Maven deploy OSSRH
-        run: ./mvnw -B -DskipTests -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} deploy
+        run: ./mvnw -B -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} clean package deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
