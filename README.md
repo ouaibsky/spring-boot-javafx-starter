@@ -2,7 +2,9 @@
 
 Boot starter to easily Bridge JavaFx and Spring Boot.
 
-Inspire from https://github.com/yoep/spring-boot-starter-javafx
+It means JavaFx CDI will use the Spring one.
+
+Inspired from: https://github.com/yoep/spring-boot-starter-javafx
 
 ## Usage
 
