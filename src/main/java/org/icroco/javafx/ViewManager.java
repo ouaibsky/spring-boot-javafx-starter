@@ -2,6 +2,7 @@ package org.icroco.javafx;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.EventListener;
 
 import java.util.List;
@@ -11,11 +12,14 @@ import java.util.Optional;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+@SuppressWarnings("unused")
 @Slf4j
 public class ViewManager {
-    private final Map<String, FxView<?>> views;
+    private final ConfigurableApplicationContext applicationContext;
+    private final Map<String, FxView<?>>         views;
 
-    public ViewManager(final List<FxView<?>> views) {
+    public ViewManager(ConfigurableApplicationContext applicationContext, final List<FxView<?>> views) {
+        this.applicationContext = applicationContext;
         this.views = views.stream()
                           .collect(toMap(si -> si.binding().id(), identity()));
     }
@@ -29,7 +33,7 @@ public class ViewManager {
         getPrimary();
     }
 
-
+    @SuppressWarnings("unchecked")
     public <C> FxView<C> getPrimary() {
         return views.values()
                     .stream()
@@ -49,5 +53,6 @@ public class ViewManager {
         log.debug("Stage ready received");
         event.getStage().setScene(getPrimary().scene());
         event.getStage().show();
+        applicationContext.publishEvent(new SceneReadyEvent(event.getStage().getScene()));
     }
 }
